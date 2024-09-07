@@ -36,7 +36,7 @@ jobs:
         # Check if the file exists before proceeding
             echo "$(ls)"
             rm -rf "url.txt"
-            mv *.* 
+            mv *.* *.mp4
             VIDEO_FILE="$(ls)"
             if [ -f "$VIDEO_FILE" ]; then
                 ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film "1.$VIDEO_FILE"
