@@ -25,21 +25,26 @@ jobs:
 
     - name: Convert Video
       run: |
-        MAIN_URL="https://de17.seedr.cc/ff_get/5503122980/Dead.Silence.2007.720p.BluRay.x264.YIFY.mp4?st=DQYck8aFPfThTV7UBwQf0w&e=1725800295"
-        mkdir -p videos
+        # Download Files from URL.txt
+        USER_AGENT="Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.3"
         cd videos
-        wget "$MAIN_URL" -q
 
-        # Capture the filename from the URL
-        VIDEO_FILE=$(basename "$MAIN_URL")
+        # Read URLs from url.txt and download each file
+        while IFS= read -r url; do
+            VIDEO_FILE=$(basename "$url")
+            curl -L -A "$USER_AGENT" -O "$url"
 
         # Check if the file exists before proceeding
-        if [ -f "$VIDEO_FILE" ]; then
-          ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film "1.$VIDEO_FILE"
-          rm -rf "$VIDEO_FILE"
-        else
-          echo "Error: File $VIDEO_FILE not found."
-        fi
+            if [ -f "$VIDEO_FILE" ]; then
+                ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film "1.$VIDEO_FILE"
+                rm -rf "$VIDEO_FILE"
+            else
+                echo "Error: File $VIDEO_FILE not found."
+            fi
+        done < url.txt
+
+        # Clean up the url.txt file
+        rm -rf "url.txt"
 
     - name: Upload ReVanced Applications
       if: inputs.UPLOAD
