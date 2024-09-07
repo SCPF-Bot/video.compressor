@@ -26,16 +26,17 @@ jobs:
     - name: Convert Video
       run: |
         # Download Files from URL.txt
-        USER_AGENT="Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.3"
         cd videos
 
         # Read URLs from url.txt and download each file
         while IFS= read -r url; do
-            curl -L -A "$USER_AGENT" --parallel -O "$url"
+            USER_AGENT="Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.3"
+            curl -L -A "$USER_AGENT" --parallel -O -J "$url"
 
         # Check if the file exists before proceeding
             echo "$(ls)"
             rm -rf "url.txt"
+            mv *.* 
             VIDEO_FILE="$(ls)"
             if [ -f "$VIDEO_FILE" ]; then
                 ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film "1.$VIDEO_FILE"
