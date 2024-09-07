@@ -38,49 +38,11 @@ jobs:
         java-version: "17"
         java-package: jdk
 
-    - name: Declare Variables
-      run: |
-        echo "MAIN_TAG=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
-
     - name: Download Prerequisites
       run: |
         cd revanced/assets/temp
         chmod +x download.prerequisites.sh
         ./download.prerequisites.sh
-
-    - name: Copy Files
-      run: |
-        cd revanced
-        chmod +x copy.latest.files.sh
-        ./copy.latest.files.sh
-
-    - name: Download
-      if: inputs.BUILD
-      run: |
-        cd revanced/packages/reddit
-        chmod +x download.sh
-        ./download.sh
-
-    - name: Compile
-      if: inputs.BUILD
-      run: |
-        cd revanced/packages/reddit
-        chmod +x compile.sh
-        ./compile.sh
-
-    - name: Sign Packages
-      if: inputs.SIGN
-      run: |
-        cd revanced
-        chmod +x sign.sh
-        ./sign.sh
-
-    - name: Archive Packages
-      if: inputs.ARCHIVE-PACKAGES
-      run: |
-        cd revanced
-        chmod +x 7z.sh
-        ./7z.sh
 
     - name: Upload ReVanced Applications
       if: inputs.UPLOAD
