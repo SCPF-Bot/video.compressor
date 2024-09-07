@@ -24,10 +24,8 @@ jobs:
         mkdir videos
         cd videos
         wget "$MAIN_URL"
-        ls 
-        ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film outputfilename.mp4
-        chmod +x download.prerequisites.sh
-        ./download.prerequisites.sh
+        VIDEO_FILE=$(ls)
+        ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film "1.$VIDEO_FILE"
 
     - name: Upload ReVanced Applications
       if: inputs.UPLOAD
