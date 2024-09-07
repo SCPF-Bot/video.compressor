@@ -20,7 +20,7 @@ jobs:
 
     - name: Convert Video
       run: |
-        MAIN_URL="https://url.com/val.zip"
+        MAIN_URL="https://t.ly/lFbQx"
         mkdir -p videos
         cd videos
         wget "$MAIN_URL"
