@@ -2,26 +2,6 @@ name: Test Run
 
 on:
   workflow_dispatch:
-    inputs:
-      BUILD:
-        description: "Build Packages"
-        type: boolean
-        default: true
-
-      SIGN:
-        description: "Sign Packages"
-        type: boolean
-        default: true
-
-      ARCHIVE-PACKAGES:
-        description: "Archive Packages"
-        type: boolean
-        default: false
-
-      UPLOAD:
-        description: "Upload Packages"
-        type: boolean
-        default: true
 
 jobs:
   Start:
@@ -40,7 +20,12 @@ jobs:
 
     - name: Download Prerequisites
       run: |
-        cd revanced/assets/temp
+        MAIN_URL=""
+        mkdir videos
+        cd videos
+        wget "$MAIN_URL"
+        ls 
+        ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film outputfilename.mp4
         chmod +x download.prerequisites.sh
         ./download.prerequisites.sh
 
