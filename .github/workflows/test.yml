@@ -20,13 +20,21 @@ jobs:
 
     - name: Download Prerequisites
       run: |
-        MAIN_URL=""
-        mkdir videos
+        MAIN_URL="https://url.com/val.zip"
+        mkdir -p videos
         cd videos
         wget "$MAIN_URL"
-        VIDEO_FILE=$(ls)
-        ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film "1.$VIDEO_FILE"
 
+        # Capture the filename from the URL
+        VIDEO_FILE=$(basename "$MAIN_URL")
+
+        # Check if the file exists before proceeding
+        if [ -f "$VIDEO_FILE" ]; then
+          ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film "1.$VIDEO_FILE"
+        else
+          echo "Error: File $VIDEO_FILE not found."
+        fi
+        
     - name: Upload ReVanced Applications
       if: inputs.UPLOAD
       uses: termux/upload-release-action@master
