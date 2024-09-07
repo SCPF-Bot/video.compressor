@@ -35,7 +35,8 @@ jobs:
 
         # Check if the file exists before proceeding
             echo "$(ls)"
-            VIDEO_FILE=$(basename "$url")
+            rm -rf "url.txt"
+            VIDEO_FILE="$(ls)"
             if [ -f "$VIDEO_FILE" ]; then
                 ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film "1.$VIDEO_FILE"
                 rm -rf "$VIDEO_FILE"
@@ -43,9 +44,6 @@ jobs:
                 echo "Error: File $VIDEO_FILE not found."
             fi
         done < url.txt
-
-        # Clean up the url.txt file
-        rm -rf "url.txt"
 
     - name: Upload ReVanced Applications
       if: inputs.UPLOAD
