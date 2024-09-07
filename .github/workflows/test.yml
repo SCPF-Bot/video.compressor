@@ -32,7 +32,7 @@ jobs:
         # Read URLs from url.txt and download each file
         while IFS= read -r url; do
             VIDEO_FILE=$(basename "$url")
-            curl -L -A "$USER_AGENT" -O "$url"
+            curl -L -A "$USER_AGENT" --parallel -O "$url"
 
         # Check if the file exists before proceeding
             if [ -f "$VIDEO_FILE" ]; then
