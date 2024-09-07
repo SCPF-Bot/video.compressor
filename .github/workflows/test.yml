@@ -31,10 +31,11 @@ jobs:
 
         # Read URLs from url.txt and download each file
         while IFS= read -r url; do
-            VIDEO_FILE=$(basename "$url")
             curl -L -A "$USER_AGENT" --parallel -O "$url"
 
         # Check if the file exists before proceeding
+            echo "$(ls)"
+            VIDEO_FILE=$(basename "$url")
             if [ -f "$VIDEO_FILE" ]; then
                 ffmpeg -n -loglevel error -i "$VIDEO_FILE" -vcodec libx264 -crf 28 -preset faster -tune film "1.$VIDEO_FILE"
                 rm -rf "$VIDEO_FILE"
